@@ -246,6 +246,7 @@ namespace GarageProject
             if (!int.TryParse(Console.ReadLine(), out wheels)) wheels = -17;
             var vehicls = theHandler.GetCharacterizedVehicles(wheels, color);
             foreach (Vehicle v in vehicls) Console.WriteLine(v.License);
+            Console.WriteLine();
         }
         private void FantasyPopulation()
         {

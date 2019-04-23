@@ -44,8 +44,8 @@ namespace GarageProject
 
         public IEnumerable<Vehicle> GetCharacterizedVehicles(int wheels, string color) {
             return theGarage.Where(v =>
-               (wheels <= 0 || v.Wheels == wheels) &&
-               (color != null || v.Color == color)
+               (wheels < 0 || v.Wheels == wheels) &&
+               (color == null || v.Color == color)
             );
         }
     }

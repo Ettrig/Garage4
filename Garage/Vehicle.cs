@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GarageProject
 {
-    class Vehicle
+    public class Vehicle
     {
         private string license; // Must be unique
         public string License { get => license; set => license = value; }

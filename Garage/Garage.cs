@@ -6,7 +6,7 @@ using System.Text;
 namespace GarageProject
 {
     //Garage contains only Vehicle, so the generic type is pointless
-    class Garage<T> : IEnumerable<T> where T : Vehicle
+    public class Garage<T> : IEnumerable<T> where T : Vehicle
     {
         private int capacity;
         public int Capacity { get => capacity; set => capacity = value; }
@@ -102,6 +102,7 @@ namespace GarageProject
             var indx = FindVehicleIndex(license);
             if (indx<0) return false;
             vehicles[indx] = null;
+            count = count - 1; 
             return true; 
         }
 
