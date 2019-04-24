@@ -16,6 +16,11 @@ namespace GarageProject
 
         public bool Initialized() => !(theGarage == null);
 
+        public bool Full()
+        {
+            return theGarage.Count >= theGarage.Capacity; 
+        }
+
         public bool AddVehicle(Vehicle theVehicle)
         {
             if (theGarage.Count == theGarage.Capacity) return false;
@@ -47,6 +52,14 @@ namespace GarageProject
                (wheels < 0 || v.Wheels == wheels) &&
                (color == null || v.Color == color)
             );
+        }
+
+        public List<TypeListItem> ListVehicleTypes()
+        {
+            var returnVal = new List<TypeListItem>();
+            IEnumerable<IGrouping<string, Vehicle>> vehiclsGrouped = theGarage.GroupBy(v => v.GetType().ToString()); 
+            foreach (IGrouping<string, Vehicle> g in vehiclsGrouped) returnVal.Add(new TypeListItem(g.Key, g.Count()));
+            return returnVal;
         }
     }
 }

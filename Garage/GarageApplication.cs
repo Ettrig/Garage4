@@ -16,7 +16,7 @@ namespace GarageProject
             while (true)
             {
                 Console.WriteLine("Please navigate through the menu by inputting the number "
-                            + "\n(1, 2, 3 , 4, 5, 6, 7, 0) of your choice"
+                            + "\n(1, 2, 3 , 4, 5, 6, 7, 8, 9 or 0) of your choice"
                             + "\n1. Build the garage."
                             + "\n2. List the vehicles in the garage."
                             + "\n3. Park a vehicle in the garage."
@@ -24,8 +24,9 @@ namespace GarageProject
                             + "\n5. Store the garage on disk."
                             + "\n6. Show a vehicle."
                             + "\n7. Search for features."
-                            + "\n8 or nothing. Close the program down."
-                            + "\n9. Fantasy population of garage."
+                            + "\n8. List vehicle types."
+                            + "\n9 or nothing. Close the program down."
+                            + "\n0. Fantasy population of garage."
                             );
 
                 var inString = Console.ReadLine();
@@ -57,15 +58,17 @@ namespace GarageProject
                         break;
                     case '7': FindVehiclesWithProperties(); 
                         break;
-                    case '8':
+                    case '8': ListVehicleTypes();
+                        break; 
+                    case '9':
                         Console.WriteLine("Thank You and Goodbye!");
                         break;
-                    case '9': FantasyPopulation(); 
+                    case '0': FantasyPopulation(); 
                         break;
                     default:
                         break;
                 }
-                if (inString[0] == '8') break;
+                if (inString[0] == '9') break;
             }
         }
 
@@ -138,17 +141,32 @@ namespace GarageProject
             }
 
             if (!InitializedP()) return;
+            if (theHandler.Full())
+            {
+                Console.WriteLine("The garage is full. No more vehicle can be parked.\n");
+                return;
+            }
             Console.WriteLine("What does the license plate say?");
             string license = Console.ReadLine().ToUpper();
+            if( theHandler.FindVehicle(license)!=null )
+            {
+                Console.WriteLine("This vehicle is already parked. It cannot be parked again");
+                return; 
+            }
             Console.WriteLine("What color is the vehicle?");
             string color = Console.ReadLine();
             Console.WriteLine("How many wheels does the vehicle have?");
             inString = Console.ReadLine();
             if (!int.TryParse(inString, out int wheels))
             {
-                Console.WriteLine("The input for number of wheel cannot be interpreted as a nnumber.");
+                Console.WriteLine("The input text for number of wheel cannot be interpreted as a nnumber.");
                 Console.WriteLine("The vehicle cannot be parked.");
                 return;
+            }
+            if (wheels<0)
+            {
+                Console.WriteLine("The program cannot accept a negative number of wheels");
+                return; 
             }
             Console.WriteLine("What kind of vehicle is being parked?"
                         + "\nAeroplane, Bus, Boat, Car or MC?");
@@ -248,9 +266,18 @@ namespace GarageProject
             foreach (Vehicle v in vehicls) Console.WriteLine(v.License);
             Console.WriteLine();
         }
+
+        private void ListVehicleTypes()
+        {
+            List<TypeListItem> groupList = theHandler.ListVehicleTypes();
+            Console.WriteLine( "Type               Count");
+            foreach (var group in groupList) Console.WriteLine($"{group.Namn}  {group.Antal}");
+            Console.WriteLine();
+        }
+
         private void FantasyPopulation()
         {
-            theHandler.CreateGarage(17);
+            theHandler.CreateGarage(7);
             theHandler.AddVehicle(new Car("CAR1", "Red", 4, 4));
             theHandler.AddVehicle(new Car("CAR2", "Blue", 4, 7));
             theHandler.AddVehicle(new Airplane("PLANE", "White", 3, false));
