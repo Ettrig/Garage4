@@ -15,7 +15,7 @@ namespace GarageProject
         protected Vehicle[] vehicles;
 
         public Garage(int cap)
-        {
+        { 
             capacity = cap;
             vehicles = new Vehicle[capacity];
         }

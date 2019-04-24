@@ -77,5 +77,16 @@ namespace GarageTest
             Assert.AreEqual(gar.Count, 0);
         }
 
+        [TestMethod]
+        public void CanGetEnumerator()
+        {
+            var gar = new Garage<Vehicle>(17);
+            var vehicl = new Vehicle("ABC", "Red", 4);
+            gar.AddVehicle(vehicl);
+
+            var enumerator = gar.GetEnumerator(); 
+
+            Assert.AreNotEqual(enumerator, null);
+        }
     }
 }
