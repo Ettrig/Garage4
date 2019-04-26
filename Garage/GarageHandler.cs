@@ -47,19 +47,24 @@ namespace GarageProject
             return theGarage;
         }
 
-        public IEnumerable<Vehicle> GetCharacterizedVehicles(int wheels, string color) {
+        public IEnumerable<Vehicle> GetCharacterizedVehicles(Type vehicleType, int wheels, string color) {
             return theGarage.Where(v =>
+               (vehicleType==null || v.GetType() == vehicleType) &&
                (wheels < 0 || v.Wheels == wheels) &&
-               (color == null || v.Color == color)
+               (color == "" || v.Color == color)
             );
         }
 
         public List<TypeListItem> ListVehicleTypes()
         {
             var returnVal = new List<TypeListItem>();
-            IEnumerable<IGrouping<string, Vehicle>> vehiclsGrouped = theGarage.GroupBy(v => v.GetType().ToString()); 
+            IEnumerable<IGrouping<string, Vehicle>> vehiclsGrouped = theGarage.GroupBy(v => v.GetType().Name); 
             foreach (IGrouping<string, Vehicle> g in vehiclsGrouped) returnVal.Add(new TypeListItem(g.Key, g.Count()));
+            //var result = theGarage
+            //    .GroupBy(v => v.GetType().Name)
+            //    .Select(g => new TypeListItem(g.Key, g.Count()));
             return returnVal;
+
         }
     }
 }

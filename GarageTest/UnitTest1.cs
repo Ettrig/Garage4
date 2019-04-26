@@ -1,31 +1,37 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using GarageProject; 
+using GarageProject;
+using System.Linq; 
 
 namespace GarageTest
 {
     [TestClass]
     public class UnitTest1
     {
+        const int garageSize = 17;
+
         [TestMethod]
         public void ConstructedGarageExists()
         {
-            var gar = new Garage<Vehicle>(17);
+            var gar = new Garage<Vehicle>(garageSize);
 
-            Assert.AreNotEqual(gar, null);
+            Assert.IsNotNull(gar);
         }
 
         [TestMethod]
-        public void CapacityIs17()
+        public void Garage_CreateGarageWith17Spots_ShouldPass()
         {
-            var gar = new Garage<Vehicle>(17);
+            var gar = new Garage<Vehicle>(garageSize);
 
-            Assert.AreEqual(gar.Capacity, 17);
+            int expected = garageSize;
+            int actual = gar.Capacity;
+
+            Assert.AreEqual(actual, expected);
         }
 
         [TestMethod]
         public void CountIs0()
         {
-            var gar = new Garage<Vehicle>(17);
+            var gar = new Garage<Vehicle>(garageSize);
 
             Assert.AreEqual(gar.Count, 0);
         }
@@ -50,7 +56,8 @@ namespace GarageTest
 
             Vehicle testResult = gar.FindVehicle("ABC"); 
 
-            Assert.AreNotEqual(testResult, null);
+            Assert.IsNotNull(testResult);
+            
         }
 
         [TestMethod]
@@ -78,15 +85,46 @@ namespace GarageTest
         }
 
         [TestMethod]
-        public void CanGetEnumerator()
+        public void EnumeratorIsNotNull()
         {
             var gar = new Garage<Vehicle>(17);
-            var vehicl = new Vehicle("ABC", "Red", 4);
+            var vehicl = new Vehicle("ABR", "Red",  4);
             gar.AddVehicle(vehicl);
 
             var enumerator = gar.GetEnumerator(); 
 
             Assert.AreNotEqual(enumerator, null);
         }
+
+        [TestMethod]
+        public void EnumeratorMoveNextIsTrue()
+        {
+            var gar = new Garage<Vehicle>(17);
+            var vehicl = new Vehicle("ABR", "Red", 4);
+            gar.AddVehicle(vehicl);
+
+            var enumerator = gar.GetEnumerator();
+
+            var myBool = enumerator.MoveNext();
+
+            Assert.AreEqual(myBool, true);
+        }
+
+        [TestMethod]
+        public void EnumeratorMoveNextIsFalse()
+        {
+            var gar = new Garage<Vehicle>(17);
+            var vehicl = new Vehicle("ABR", "Red", 4);
+            gar.AddVehicle(vehicl);
+
+            var enumerator = gar.GetEnumerator();
+
+            var myBool = enumerator.MoveNext();
+            myBool = enumerator.MoveNext();
+
+            Assert.AreEqual(myBool, false);
+        }
+
+
     }
 }

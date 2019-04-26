@@ -7,7 +7,23 @@ namespace GarageProject
 {
     class GarageApplication
     {
-        GarageHandler theHandler = new GarageHandler();
+        GarageHandler theHandler;
+        Dictionary<string, Type> typeDictionary;
+
+        public GarageApplication ()
+        {
+            theHandler = new GarageHandler();
+            typeDictionary = new Dictionary<string, Type>();
+
+            typeDictionary.Add("CAR", typeof( Car));
+            typeDictionary.Add("BUS", typeof(Bus));
+            typeDictionary.Add("BOAT", typeof(Boat));
+            typeDictionary.Add("AIRPLANE", typeof(Airplane));
+            typeDictionary.Add("AEROPLANE", typeof(Airplane));
+            typeDictionary.Add("PLANE", typeof(Airplane));
+            typeDictionary.Add("MOTORCYCLE", typeof(Motorcycle));
+            typeDictionary.Add("MC", typeof(Motorcycle));
+        }
 
         public void Run()
         {
@@ -159,7 +175,7 @@ namespace GarageProject
             inString = Console.ReadLine();
             if (!int.TryParse(inString, out int wheels))
             {
-                Console.WriteLine("The input text for number of wheel cannot be interpreted as a nnumber.");
+                Console.WriteLine("The input text for number of wheel cannot be interpreted as a number.");
                 Console.WriteLine("The vehicle cannot be parked.");
                 return;
             }
@@ -257,13 +273,23 @@ namespace GarageProject
             if (!InitializedP()) return;
             Console.WriteLine("For each line, specify value of named vehicle property.");
             Console.WriteLine("Empty line (Return) is interpreted as accepting any value.");
-            Console.WriteLine("Color:");
+            Console.WriteLine("What kind of vehicle?:");
+            Type vehicleType;
+            string vehicleTypeString = Console.ReadLine().ToUpper();
+            if ((vehicleTypeString != "") && (!typeDictionary.ContainsKey(vehicleTypeString)))
+            {
+                Console.WriteLine("The string could not be interpreted as a kind of vehicle.");
+                return;
+            }
+            else typeDictionary.TryGetValue(vehicleTypeString, out vehicleType); 
+            Console.WriteLine("Color?:");
             string color = Console.ReadLine();
-            Console.WriteLine("Number of wheels:");
+            Console.WriteLine("Number of wheels?:");
             int wheels;
             if (!int.TryParse(Console.ReadLine(), out wheels)) wheels = -17;
-            var vehicls = theHandler.GetCharacterizedVehicles(wheels, color);
-            foreach (Vehicle v in vehicls) Console.WriteLine(v.License);
+            var vehicls = theHandler.GetCharacterizedVehicles(vehicleType, wheels, color);
+            if (vehicls.Count() == 0) Console.WriteLine("No vehicle fulfills all criteria.");
+            else foreach (Vehicle v in vehicls) Console.WriteLine(v.License);
             Console.WriteLine();
         }
 
@@ -284,7 +310,7 @@ namespace GarageProject
             theHandler.AddVehicle(new Motorcycle("MC1", "Black", 3, true));
             theHandler.AddVehicle(new Motorcycle("MC2", "Black", 2, false));
             theHandler.AddVehicle(new Bus("BUS", "Black", 6, true));
-            theHandler.AddVehicle(new Boat("Boat", "Green", 0, false));
+            theHandler.AddVehicle(new Boat("BOAT", "Green", 0, false));
             Console.WriteLine("Initializing the garage with seven vehicles.\n");
         }
     }

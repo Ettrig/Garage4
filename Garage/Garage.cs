@@ -9,7 +9,7 @@ namespace GarageProject
     public class Garage<T> : IEnumerable<T> where T : Vehicle
     {
         private int capacity;
-        public int Capacity { get => capacity; set => capacity = value; }
+        public int Capacity { get => capacity;  set => capacity = value; }
         private int count;
         public int Count { get => count; set => count = value; }
         protected Vehicle[] vehicles;
@@ -67,6 +67,7 @@ namespace GarageProject
         // It is stated that T is Vehicle in this class
         public IEnumerator<T> GetEnumerator()
         {
+
             return (IEnumerator<T>) new GarageEnumerator<Vehicle>(vehicles);
         }
 
